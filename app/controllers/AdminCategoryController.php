@@ -66,7 +66,13 @@ class AdminCategoryController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		return "Category edit page of: " . $id;
+		$category = Category::find($id);
+
+		$parentCategories = Category::where('parent_id', 0)->get();
+
+		return View::make('admin.category.edit')
+			->with('category', $category)
+			->with('parentCategories', $parentCategories);
 	}
 
 
@@ -78,7 +84,19 @@ class AdminCategoryController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$category = Category::find($id);
+
+		if($category)
+		{
+			$category->update([
+				'category_name' => Input::get('category_name'),
+				'slug' => Str::slug(Input::get('category_name')),
+				'description' => Input::get('description'),
+				'parent_id' => Input::get('parent_id')
+			]);
+		}
+
+		return Redirect::to('/admin/category');
 	}
 
 
@@ -90,7 +108,34 @@ class AdminCategoryController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		// Idea 1
+		$category = Category::find($id);
+		if($category)
+		{
+			$category->delete();
+		}
+		
+		return Redirect::to('/admin/category');
+
+		// Idea 2
+		// Category::where('id', $id)->delete();
+
+		// Idea 3
+		// $category = Category::find($id);
+		// $category->delete();
+	}
+
+	public function status($id) 
+	{
+		$category = Category::find($id);
+
+		$new_status = ($category->category_status == 1) ? 0 : 1;
+
+		$category->update([
+			'category_status' => $new_status
+		]);
+
+		return Redirect::to('/admin/category');
 	}
 
 

@@ -5,6 +5,7 @@ Route::group(array('prefix' => 'admin'), function() {
 	Route::get('/', 'AdminHomeController@index');
 
 	Route::delete('category/{id}', 'AdminCategoryController@destroy');
+	Route::put('category/{id}/status', 'AdminCategoryController@status');
 	Route::put('category/{id}', 'AdminCategoryController@update');
 	Route::get('category/{id}/edit', 'AdminCategoryController@edit');
 	Route::post('category', 'AdminCategoryController@store');

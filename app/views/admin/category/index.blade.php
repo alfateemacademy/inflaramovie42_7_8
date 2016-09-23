@@ -44,14 +44,18 @@ Categories
                                 <th>{{ $category->category_name }}</th>
                                 <th>{{ $category->parent_id }}</th>
                                 <th class="text-center">
-                                    @if($category->category_status == 1)
-                                        <a href="#" class="btn btn-success btn-xs">Active</a>
-                                    @else
-                                        <a href="#" class="btn btn-danger btn-xs">Deactive</a>
-                                    @endif
+                                    <form action="/admin/category/{{ $category->id }}/status" method="post">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        @if($category->category_status == 1)
+                                            <button type="submit" class="btn btn-success btn-xs">Active</button>
+                                        @else
+                                            <button type="submit" class="btn btn-danger btn-xs">Deactive</button>
+                                        @endif
+                                    </form>
                                 </th>
                                 <th class="text-center">
-                                    <form action="" method="DELETE">
+                                    <form action="/admin/category/{{ $category->id }}" method="post">
+                                        <input type="hidden" name="_method" value="DELETE">
                                         <a href="/admin/category/{{ $category->id }}/edit"
                                            class="btn btn-outline btn-circle btn-sm purple">
                                             <i class="fa fa-edit"></i> Edit </a>
