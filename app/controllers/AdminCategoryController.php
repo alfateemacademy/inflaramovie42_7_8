@@ -35,6 +35,16 @@ class AdminCategoryController extends \BaseController {
 	 */
 	public function store()
 	{
+		$validator = Validator::make(Input::all(), [
+			'category_name' => 'required|unique:categories',
+			'description' => 'required'
+		]);
+
+		if($validator->fails())
+		{
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+
 		Category::create([
 			'category_name' => Input::get('category_name'),
 			'slug' => Str::slug(Input::get('category_name')),
@@ -84,6 +94,16 @@ class AdminCategoryController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		$validator = Validator::make(Input::all(), [
+			'category_name' => 'required|unique:categories,category_name,' . $id,
+			'description' => 'required'
+		]);
+
+		if($validator->fails())
+		{
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+
 		$category = Category::find($id);
 
 		if($category)

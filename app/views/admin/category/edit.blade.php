@@ -27,7 +27,7 @@ Edit Category
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
-
+                    @include('admin.layouts._partials.errors')
                     <form action="/admin/category/{{ $category->id }}" method="post">
                         <input type="hidden" name="_method" value="PUT">
                         <div class="row">
@@ -35,11 +35,11 @@ Edit Category
                                 <div class="form-body">
                                     <div class="form-group">
                                         <label class="control-label">Name</label>
-                                        <input type="text" name="category_name" id="category_name" class="form-control" value="{{ $category->category_name }}">
+                                        <input type="text" name="category_name" id="category_name" class="form-control" value="{{ (Input::old('category_name')) ? Input::old('category_name') : $category->category_name }}">
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Description</label>
-                                        <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ $category->description }}</textarea>
+                                        <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ (Input::old('description')) ? Input::old('description') : $category->description }}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Parent Categories</label>

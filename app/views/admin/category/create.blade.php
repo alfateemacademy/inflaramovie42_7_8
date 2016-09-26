@@ -27,18 +27,23 @@ Create Category
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
-
+                    @include('admin.layouts._partials.errors')
                     <form action="/admin/category" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-body">
-                                    <div class="form-group">
+                                    <div class="form-group {{ $errors->first('category_name') ? 'has-error' : null }}">
                                         <label class="control-label">Name</label>
-                                        <input type="text" name="category_name" id="category_name" class="form-control" value="">
+                                        <input type="text" name="category_name" id="category_name" class="form-control" value="{{ Input::old('category_name') }}">
+                                        @if($errors->first('category_name'))
+                                        <span class="help-block">
+                                             {{ $errors->first('category_name') }}
+                                        </span>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Description</label>
-                                        <textarea name="description" id="description" cols="30" rows="10" class="form-control"></textarea>
+                                        <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ Input::old('description') }}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Parent Categories</label>
