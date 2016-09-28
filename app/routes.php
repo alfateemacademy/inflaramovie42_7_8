@@ -11,6 +11,12 @@ Route::group(array('prefix' => 'admin'), function() {
 	Route::post('category', 'AdminCategoryController@store');
 	Route::get('category/create', 'AdminCategoryController@create');
 	Route::get('category', 'AdminCategoryController@index');
+
+	Route::put('person/{id}/status', [
+		'as' => 'admin.person.status', 
+		'uses' => 'AdminPersonController@status'
+	]);
+	Route::resource('person', 'AdminPersonController');
 });
 
 Route::get('/', function() {
