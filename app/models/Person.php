@@ -6,6 +6,6 @@ class Person extends Eloquent {
 
 	// protected $primaryKey = 'cat_id';
 
-	protected $fillable = [];
+	protected $guarded = ['id'];
 	
 }

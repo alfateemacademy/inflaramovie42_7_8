@@ -28,7 +28,7 @@ Create Person
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
                     @include('admin.layouts._partials.errors')
-                    {{ Form::open(['route' => 'admin.person.store', 'method' => 'post']) }}
+                    {{ Form::open(['route' => 'admin.person.store', 'method' => 'post', 'files' => true]) }}
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-body">

@@ -2,6 +2,11 @@
 
 class AdminPersonController extends \BaseController {
 
+	public function __construct()
+	{
+		$this->beforeFilter('csrf', ['on' => 'post']);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -34,7 +39,37 @@ class AdminPersonController extends \BaseController {
 	 */
 	public function store()
 	{
-		return Input::all();
+
+		//return Input::file('original_poster')->move('uploads/person', 'asif.jpg');
+		// return Input::all();
+
+		$validator = Validator::make(Input::all(), [
+			'person_name' => 'required'
+		]);
+
+		if($validator->fails())
+		{
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+
+		$fileName = null;
+		if(Input::hasFile('original_poster'))
+		{
+			$file = Input::file('original_poster');
+			// sdlkfjdasklfjadsklfjadskfjlklj.jpg
+			$fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+			$file->move('uploads/person', $fileName);
+		}
+
+		Person::create([
+			'person_name' => Input::get('person_name'),
+			'slug' => Str::slug(Input::get('person_name')),
+			'fullname' => Input::get('fullname'),
+			'bio' => Input::get('bio'),
+			'original_poster' => $fileName
+		]);
+
+		return Redirect::route('admin.person.index');
 	}
 
 
