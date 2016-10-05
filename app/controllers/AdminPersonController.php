@@ -4,7 +4,7 @@ class AdminPersonController extends \BaseController {
 
 	public function __construct()
 	{
-		$this->beforeFilter('csrf', ['on' => 'post']);
+		$this->beforeFilter('csrf', ['on' => ['post', 'put']]);
 	}
 
 	/**
@@ -93,7 +93,10 @@ class AdminPersonController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$person = Person::find($id);
+
+		return View::make('admin.person.edit')
+			->with('person', $person);
 	}
 
 
@@ -105,7 +108,43 @@ class AdminPersonController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		// return Input::all();
+		$validator = Validator::make(Input::all(), [
+			'person_name' => 'required',
+			'fullname' => 'required'
+		]);
+
+		if($validator->fails())
+		{
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+
+		$person = Person::find($id);
+
+		$oldPoster = $person->original_poster;
+
+		$fileName = $person->original_poster;
+
+		if(Input::hasFile('original_poster'))
+		{
+			$file = Input::file('original_poster');
+			// sdlkfjdasklfjadsklfjadskfjlklj.jpg
+			$fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+			$file->move('uploads/person', $fileName);
+
+			File::delete('uploads/person/' . $oldPoster);
+		}
+
+
+		$person->update([
+			'person_name' => Input::get('person_name'),
+			'slug' => Str::slug(Input::get('person_name')),
+			'fullname' => Input::get('fullname'),
+			'bio' => Input::get('bio'),
+			'original_poster' => $fileName
+		]);
+
+		return Redirect::route('admin.person.index');
 	}
 
 
