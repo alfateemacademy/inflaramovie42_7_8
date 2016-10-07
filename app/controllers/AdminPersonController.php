@@ -14,7 +14,7 @@ class AdminPersonController extends \BaseController {
 	 */
 	public function index()
 	{
-		$people = Person::get();
+		$people = Person::paginate(Input::get('per_page'));
 
 		return View::make('admin.person.index')
 			->with('people', $people);

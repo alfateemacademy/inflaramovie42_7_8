@@ -27,6 +27,15 @@ People
                     </div>
                 </div>
                 <div class="portlet-body flip-scroll">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{Form::open(['method' => 'GET', 'id' => 'formPerPage']) }}
+                            {{ Form::select('per_page', [15 => 15, 30 => 30, 50 => 50, 100 => 100], Input::get('per_page'), ['class' => 'form-control select-per-page']) }}
+                        {{ Form::close() }}
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+                <br><br>
                     <table class="table table-striped table-condensed flip-content">
                         <thead class="flip-content">
                         <tr>
@@ -70,9 +79,26 @@ People
                         </tbody>
                     </table>
 
+                    <div>
+                        {{ $people->links() }}
+                        <p>
+                            Total Pages: {{ $people->getTotal() }} -- {{ $people->getCurrentPage()}}
+                        </p>
+                    </div>
+
                 </div>
             </div>
             <!-- END Portlet PORTLET-->
         </div>
     </div>
+@endsection
+
+@section('footer.scripts')
+    <script>
+    $(document).ready(function() {
+        $(".select-per-page").on('change', function() {
+            $("#formPerPage").submit();
+        });
+    });
+    </script>
 @endsection

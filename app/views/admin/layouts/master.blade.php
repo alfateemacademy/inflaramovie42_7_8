@@ -1986,6 +1986,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="/assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
         <script src="/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+        @yield('footer.scripts')
     </body>
 
 </html>

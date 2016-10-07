@@ -9,7 +9,7 @@ class AdminHomeController extends \BaseController {
 	 */
 	public function index()
 	{
-		return "<form method='post' action='/admin'> <input type='submit' value='submit'> </form>";
+		return;
 	}
 
 
