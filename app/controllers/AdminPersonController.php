@@ -14,7 +14,12 @@ class AdminPersonController extends \BaseController {
 	 */
 	public function index()
 	{
-		$people = Person::paginate(Input::get('per_page'));
+		// $people = Person::paginate(Input::get('per_page'));
+
+		$people = Person::where('fullname', 'LIKE', '%' . Input::get('q') . '%')
+			->orWhere('person_name', 'LIKE', '%' . Input::get('q') . '%')
+			->orWhere('person_status', Input::get('status'))
+			->paginate();
 
 		return View::make('admin.person.index')
 			->with('people', $people);

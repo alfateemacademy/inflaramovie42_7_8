@@ -27,14 +27,24 @@ People
                     </div>
                 </div>
                 <div class="portlet-body flip-scroll">
+                {{Form::open(['method' => 'GET', 'id' => 'formPerPage']) }}
                 <div class="row">
                     <div class="col-md-4">
-                        {{Form::open(['method' => 'GET', 'id' => 'formPerPage']) }}
-                            {{ Form::select('per_page', [15 => 15, 30 => 30, 50 => 50, 100 => 100], Input::get('per_page'), ['class' => 'form-control select-per-page']) }}
-                        {{ Form::close() }}
+                            {{ Form::select('per_page', [15 => 15, 30 => 30, 50 => 50, 100 => 100], Input::get('per_page'), ['class' => 'form-control select-filter']) }}
                     </div>
-                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                            {{ Form::select('status', [0 => 'Deactive', 1 => 'Active'], Input::get('status'), ['class' => 'form-control select-filter']) }}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                          <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{ Input::get('q') }}">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Search</button>
+                          </span>
+                        </div><!-- /input-group -->
+                    </div>
                 </div>
+                {{ Form::close() }}
                 <br><br>
                     <table class="table table-striped table-condensed flip-content">
                         <thead class="flip-content">
@@ -80,7 +90,8 @@ People
                     </table>
 
                     <div>
-                        {{ $people->links() }}
+                        {{-- $people->appends(['per_page' => Input::get('per_page')])->links() --}}
+                        {{ $people->appends(Input::all())->links() }}
                         <p>
                             Total Pages: {{ $people->getTotal() }} -- {{ $people->getCurrentPage()}}
                         </p>
@@ -96,7 +107,7 @@ People
 @section('footer.scripts')
     <script>
     $(document).ready(function() {
-        $(".select-per-page").on('change', function() {
+        $(".select-filter").on('change', function() {
             $("#formPerPage").submit();
         });
     });
