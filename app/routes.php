@@ -17,6 +17,12 @@ Route::group(array('prefix' => 'admin'), function() {
 		'uses' => 'AdminPersonController@status'
 	]);
 	Route::resource('person', 'AdminPersonController');
+
+	Route::put('movie/{id}/status', [
+		'as' => 'admin.movie.status', 
+		'uses' => 'AdminMovieController@status'
+	]);
+	Route::resource('movie', 'AdminMovieController');
 });
 
 Route::get('/', function() {
