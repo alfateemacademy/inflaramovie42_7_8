@@ -9,7 +9,9 @@ class AdminMovieController extends \BaseController {
 	 */
 	public function index()
 	{
-		$movies = Movie::paginate();
+		$movies = Movie::with('categories')->paginate();
+
+		return $movies;
 
 		return View::make('admin.movie.index')
 			->with('movies', $movies);
