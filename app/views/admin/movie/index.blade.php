@@ -72,10 +72,15 @@
                                     @foreach($movie->categories as $category)
                                         <li>{{ $category->category_name }}</li>
                                     @endforeach
+                                    
+                                    {{--<span class="label label-info">
+                                        {{ count($movie->categories) }}
+                                    </span>--}}
+
                                     </ul>
                                 </td>
                                 <td>
-                                    actors
+                                    <a href="/admin/movie/{{ $movie->id }}/actor" class="btn btn-warning btn-xs">Manage Actors</a>
                                 </td>
                                 <td class="text-center">
                                     <form action="{{ route('admin.movie.status', $movie->id) }}" method="POST">

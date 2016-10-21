@@ -7,7 +7,7 @@
 
 @section('page-title')
     Movie
-    <small>Add New</small>
+    <small>Edit</small>
 @endsection
 
 @section('breadcrumb')
@@ -16,7 +16,7 @@
         <i class="fa fa-angle-right"></i>
     </li>
     <li>
-        <span>Add New</span>
+        <span>Edit Movie</span>
     </li>
 @endsection
 
@@ -132,7 +132,7 @@
     <script src="/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 @endsection
 
-@section('scripts')
+@section('footer.scripts')  
 <script>
     $(document).ready(function() {
         $(".select2").select2();
