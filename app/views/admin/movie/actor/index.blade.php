@@ -10,7 +10,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li><span class="active">Manage Movie Actors</span></li>
+    <li><span class="active">Manage Movie Actors ({{$movie->title}})</span></li>
 @endsection
 
 @section('content')
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    {{ Form::open(['route' => ['admin.movie.actor.add', $movie->id], 'method' => 'post']) }}
+                    {{ Form::open(['route' => ['admin.movie.actor.store', $movie->id], 'method' => 'post']) }}
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -54,13 +54,18 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-home"></i>
-                        <span class="caption-subject bold uppercase"> {{ $movie->title }}</span>
+                        <span class="caption-subject bold uppercase"> {{ $movie->title }}'s Actors</span>
                     </div>
                     <div class="actions">
                         <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;"> </a>
                     </div>
                 </div>
                 <div class="portlet-body flip-scroll">
+                @if(Session::has('message'))
+                    <div class="alert alert-info">
+                        {{ Session::get('message') }}
+                    </div>
+                @endif
                     <table class="table table-striped table-condensed flip-content" id="tableResellers">
                         <thead class="flip-content">
                         <tr>
