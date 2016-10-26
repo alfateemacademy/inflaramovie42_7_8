@@ -26,6 +26,7 @@ Route::group(array('prefix' => 'admin'), function() {
 		'uses' => 'AdminMovieController@status'
 	]);
 	Route::resource('movie', 'AdminMovieController');
+	Route::resource('user', 'AdminUserController');
 });
 
 Route::get('/', function() {

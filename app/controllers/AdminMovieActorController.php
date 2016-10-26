@@ -93,6 +93,10 @@ class AdminMovieActorController extends \BaseController {
 	{
 		$movie = Movie::find($movieId);
 
+		/*DB::table('movie_actor')
+			->where('movie_id', $movieId)
+			->where('actor_id', $actorId)->delete();*/
+
 		$movie->actors()->detach($actorId);
 
 		return Redirect::back()->with('message', 'Actor Detach');
