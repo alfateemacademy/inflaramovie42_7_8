@@ -87,7 +87,7 @@ class AdminUserController extends \BaseController {
 	{
 		$user = User::find($id);
 
-		return $user;
+		return View::make('admin.user.edit', compact('user'));
 	}
 
 
@@ -99,7 +99,29 @@ class AdminUserController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$validator = Validator::make(Input::all(), [
+			'name' => 'required',
+			'email' => 'required|email|unique:users,email,' . $id,
+			'password' => 'required_with:password_confirmation|confirmed'
+		]);
+
+		if($validator->fails())
+		{
+			return Redirect::back()->withInput()->withErrors($validator);
+		}
+
+		$user = User::find($id);
+
+		$input = Input::except('_token', 'password', 'password_confirmation');
+
+		if(Input::has('password_confirmation'))
+		{
+			$input['password'] = Hash::make(Input::get('password'));
+		}
+
+		$user->update($input);
+
+		return Redirect::route('admin.user.index');
 	}
 
 
