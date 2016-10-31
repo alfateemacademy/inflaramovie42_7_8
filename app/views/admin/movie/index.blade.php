@@ -19,6 +19,8 @@
                         <span class="caption-subject bold uppercase"> Manage Movies</span>
                     </div>
                     <div class="actions">
+                        <a href="#" class="btn green btn-circle btn-outline sbold" id="fetchMovie">
+                            <i class="fa fa-plus"></i> Fetch Movie </a>
                         <a href="{{ route('admin.movie.create') }}" class="btn blue btn-circle btn-outline sbold">
                             <i class="fa fa-plus"></i> Add </a>
                         <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;"> </a>
@@ -125,4 +127,42 @@
             <!-- END Portlet PORTLET-->
         </div>
     </div>
+@endsection
+
+@section('footer.scripts')
+
+    <script>
+
+    //$(document).ready(function() {
+        $("#fetchMovie").on('click', function(e) {
+            var imdbId = window.prompt("What is your movie id?");
+
+            if(imdbId)
+            {
+                $.get("http://www.omdbapi.com/?i=" + imdbId, function(data) {
+                    if(data.Response == 'True')
+                    {
+                        $.post("/admin/movie", {_token: "{{ csrf_token() }}", movie: data}, function(resp) {
+                            console.log(resp);
+                            alert(resp.message);
+                            if(resp.added)
+                            {
+
+                                window.location.href = '/admin/movie';
+                            }
+
+                        });
+                    }
+                    else
+                    {
+                        alert("Invalid IMDB ID");
+                    }
+                    // console.log(data.Title);
+                });
+            }
+
+        });
+    //});
+    </script>
+    
 @endsection

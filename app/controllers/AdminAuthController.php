@@ -9,11 +9,6 @@ class AdminAuthController extends \BaseController {
 	 */
 	public function login()
 	{
-		if (Auth::viaRemember())
-		{
-			return Redirect::to('/admin/movie');
-		}
-
 		return View::make('admin.auth.login');
 	}
 

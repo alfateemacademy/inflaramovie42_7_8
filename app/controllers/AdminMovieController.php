@@ -1,6 +1,11 @@
-	<?php
+<?php
 
 class AdminMovieController extends \BaseController {
+
+	public function __construct()
+	{
+		$this->beforeFilter('csrf', ['on' => ['post']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +14,7 @@ class AdminMovieController extends \BaseController {
 	 */
 	public function index()
 	{
-		$movies = Movie::with('categories')->paginate();
+		$movies = Movie::with('categories')->orderBy('id', 'DESC')->paginate();
 
 		// return $movies;
 
@@ -38,6 +43,36 @@ class AdminMovieController extends \BaseController {
 	 */
 	public function store()
 	{
+		if(Request::ajax())
+		{
+			$movie = Input::get('movie');
+
+			$newMovie = Movie::create([
+				'title' => $movie['Title'],
+				'slug' => Str::slug($movie['Title']),
+				'genres' => $movie['Genre'],
+				'description' => $movie['Plot'],
+				'runtime' => $movie['Runtime'],
+				'released_year' => $movie['Year'],
+				'released_date' => date('Y-m-d', strtotime($movie['Released'])),
+				'source_id' => $movie['imdbID'],
+				'source_type' => 'imdb',
+				'type' => $movie['Type'],
+				'original_poster' => $movie['Poster']
+			]);
+
+			if($newMovie)
+			{
+				return Response::json(['added' => true, 'message' => 'Movie Added']);
+			}
+
+			return Response::json(['added' => false, 'message' => 'Movie not added']);
+
+
+			
+
+		}
+
 		$validator = Validator::make(Input::all(), [
 			'title' => 'required'
 		]);
