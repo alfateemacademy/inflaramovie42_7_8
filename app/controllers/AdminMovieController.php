@@ -68,9 +68,6 @@ class AdminMovieController extends \BaseController {
 
 			return Response::json(['added' => false, 'message' => 'Movie not added']);
 
-
-			
-
 		}
 
 		$validator = Validator::make(Input::all(), [
