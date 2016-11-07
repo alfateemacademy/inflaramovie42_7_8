@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"fzaninotto/faker": "1.6.0",
-		"barryvdh/laravel-debugbar": "~1.8"
+		"barryvdh/laravel-debugbar": "~1.8",
+		"intervention/image": "1.*"
 	},
 	"autoload": {
 		"classmap": [

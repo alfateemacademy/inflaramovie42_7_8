@@ -47,6 +47,13 @@ class AdminMovieController extends \BaseController {
 		{
 			$movie = Input::get('movie');
 
+			$img = Image::make($movie['Poster']);
+
+			$pathinfo = pathinfo($movie['Poster']);
+			$fileName = md5($pathinfo['filename'] . time()) . "." . $pathinfo['extension'];
+
+			$img->greyscale()->save('uploads/movies/posters/' . $fileName, 40);
+
 			$newMovie = Movie::create([
 				'title' => $movie['Title'],
 				'slug' => Str::slug($movie['Title']),
@@ -58,7 +65,7 @@ class AdminMovieController extends \BaseController {
 				'source_id' => $movie['imdbID'],
 				'source_type' => 'imdb',
 				'type' => $movie['Type'],
-				'original_poster' => $movie['Poster']
+				'original_poster' => $fileName
 			]);
 
 			if($newMovie)

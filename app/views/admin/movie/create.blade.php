@@ -145,6 +145,7 @@
 
                         //var textFields = $("input[type=text], textarea");
                         var textFields = $(".movie-fields");
+
                         $.each(textFields, function(i, v) {
                             //console.log(textFields);
                             //console.log($(v).attr('type'));
