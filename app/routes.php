@@ -9,10 +9,9 @@ Route::group(array('prefix' => 'admin'), function() {
 
 			$pathinfo = pathinfo("http://ia.media-imdb.com/images/M/MV5BMTY5NjQ3Njc3OF5BMl5BanBnXkFtZTcwMTg2MDA4Mg@@._V1_SX300.jpg");
 
-			return $pathinfo;
+			$fileName = md5($pathinfo['filename'] . time()) . "." . $pathinfo['extension'];
 
-			// return $img->save('asif1.jpg');
-			return $img->getClientOriginalName();
+			return $img->save('uploads/movies/posters/' . $fileName);
 		});
 
 		Route::post('/', 'AdminHomeController@store');

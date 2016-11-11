@@ -47,31 +47,76 @@ class AdminMovieController extends \BaseController {
 		{
 			$movie = Input::get('movie');
 
-			$img = Image::make($movie['Poster']);
+			DB::beginTransaction();
 
-			$pathinfo = pathinfo($movie['Poster']);
-			$fileName = md5($pathinfo['filename'] . time()) . "." . $pathinfo['extension'];
-
-			$img->greyscale()->save('uploads/movies/posters/' . $fileName, 40);
-
-			$newMovie = Movie::create([
-				'title' => $movie['Title'],
-				'slug' => Str::slug($movie['Title']),
-				'genres' => $movie['Genre'],
-				'description' => $movie['Plot'],
-				'runtime' => $movie['Runtime'],
-				'released_year' => $movie['Year'],
-				'released_date' => date('Y-m-d', strtotime($movie['Released'])),
-				'source_id' => $movie['imdbID'],
-				'source_type' => 'imdb',
-				'type' => $movie['Type'],
-				'original_poster' => $fileName
-			]);
-
-			if($newMovie)
+			try
 			{
-				return Response::json(['added' => true, 'message' => 'Movie Added']);
+				$img = Image::make($movie['Poster']);
+
+				$pathinfo = pathinfo($movie['Poster']);
+				$fileName = md5($pathinfo['filename'] . time()) . "." . $pathinfo['extension'];
+
+				$img->save('uploads/movies/posters/' . $fileName, 40);
+
+				$newMovie = Movie::create([
+					'title' => $movie['Title'],
+					'slug' => Str::slug($movie['Title']),
+					'genres' => $movie['Genre'],
+					'description' => $movie['Plot'],
+					'runtime' => $movie['Runtime'],
+					'released_year' => $movie['Year'],
+					'released_date' => date('Y-m-d', strtotime($movie['Released'])),
+					'source_id' => $movie['imdbID'],
+					'source_type' => 'imdb',
+					'type' => $movie['Type'],
+					'original_poster' => $fileName
+				]);
+
+				if($newMovie)
+				{
+					$actors = explode(",", $movie['Actors']);
+
+					$actorIds = null;
+					foreach ($actors as $actor) {
+						//$p = Person::where('source_id', $actor->imdbid)->first();
+
+						//if(!$p)
+						//{
+							$person = Person::create([
+								'person_name' => $actor,
+								'slug' => Str::slug($actor),
+								'person_status' => 1,
+								'fullname' => $actor
+							]);
+
+							$actorIds[] = $person->id;
+						//}
+						//else
+						//{
+							//$actorIds[] = $p->id;
+						//}
+					}
+
+					$newMovie->actors()->attach($actorIds);
+
+					DB::commit();
+
+					return Response::json(['added' => true, 'message' => 'Movie Added']);
+				}
 			}
+			catch (\Exception $ex)
+			{
+				DB::rollback();
+				$message = "Fatal Error";
+				if($ex->getCode() == '42S22')
+				{
+					$message = 'Invalid column';
+				}
+
+				return Response::json(['added' => false, 'message' => $message]);
+			}
+
+			
 
 			return Response::json(['added' => false, 'message' => 'Movie not added']);
 
