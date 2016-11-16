@@ -9,11 +9,18 @@ class AdminAuthController extends \BaseController {
 	 */
 	public function login()
 	{
+		/*if(Auth::check())
+		{
+			return Redirect::intended('/admin/movie');
+		}*/
+
 		return View::make('admin.auth.login');
 	}
 
 	public function postLogin()
 	{
+		
+
 		if(Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password')], Input::get('remember')))
 		{
 			return Redirect::intended('/admin/movie');

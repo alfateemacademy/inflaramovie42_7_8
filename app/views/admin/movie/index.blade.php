@@ -11,6 +11,8 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
+        @include('admin.layouts._partials.errors')
+        @include('admin.layouts._partials.success')
             <!-- BEGIN Portlet PORTLET-->
             <div class="portlet light">
                 <div class="portlet-title">
@@ -40,6 +42,7 @@
                         </select></div>
                     </div>
                     <div class="col-md-offset-6 col-md-4">
+
                         {{ Form::open(['method' => 'GET']) }}
                         <div class="input-group">
                           <input type="text" class="form-control" name="search" placeholder="Search for...">

@@ -230,12 +230,34 @@ class AdminMovieController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$movie = Movie::find($id);
+
+		try {
+
+			$image = $movie->original_poster;
+
+			if($movie->delete())
+			{
+				File::delete('uploads/movies/posters/' . $image);
+			}
+
+			return Redirect::route('admin.movie.index')->with('success', 'Your movie has been deleted.');
+		} catch (\Exception $e) {
+			if($e->getCode() == 23000)
+			{
+				return Redirect::back()->withErrors(['messsage' => 'You cannot delete movie....']);
+			}
+			/*if($e->getCode)
+			return Redirect::back()->withErrors(['messsage' => $e->getMessage()]);*/
+		}
+		
+
+		
 	}
 
 	public function status($id)
 	{
-		//
+		
 	}
 
 
