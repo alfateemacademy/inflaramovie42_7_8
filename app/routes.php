@@ -1,5 +1,6 @@
 <?php
 
+
 Route::group(array('prefix' => 'admin'), function() {
 
 	Route::group(['before' => 'auth'], function() {
@@ -51,8 +52,7 @@ Route::group(array('prefix' => 'admin'), function() {
 	Route::get('auth/login', 'AdminAuthController@login');
 });
 
-Route::get('/', function() {
-	return "adsfdsafdsfsd";
-});
+Route::get('/about', 'HomeController@about');
+Route::get('/', 'HomeController@index');
 
 

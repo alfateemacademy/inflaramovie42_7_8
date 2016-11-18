@@ -1,11 +1,8 @@
 <?php
 
-function abc()
+function getSiteOptionByKey($key)
 {
-	return "ABC";
-}
+    $options = App::make('options');
 
-function xyz1()
-{
-	return "XYZ";
+    return (isset($options[$key])) ? $options[$key] : null;
 }
