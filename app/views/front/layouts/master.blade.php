@@ -77,11 +77,14 @@
             <!--     start Main Section   -->
             <div class="uk-container uk-container-center uk-margin-large-top uk-margin-large-bottom">
                 
-                <div class="uk-grid">
+                <div class="uk-grid"> 
                     <div id="tm-left-section" class="uk-width-medium-3-10 uk-width-large-2-10 uk-hidden-small">
                         <div class="uk-panel">
                             <ul class="uk-nav  uk-nav-side uk-nav-parent-icon uk-margin-bottom" data-uk-nav="">
-                                <li class="uk-active"><a href="#">Featured</a></li>
+                                @foreach($categories as $category)
+                                    <li><a href="#">{{ $category->category_name }}</a></li>
+                                @endforeach
+                                <!-- <li class="uk-active"><a href="#">Featured</a></li>
                                 <li><a href="#">Movies</a></li>
                                 <li><a href="#">TV Shows</a></li>
                                 <li><a href="#">Music</a></li>
@@ -98,7 +101,7 @@
                                         <li><a href="#">Romance</a> </li>
                                         <li><a href="#">Documentary</a> </li>
                                     </ul>
-                                </li>
+                                </li> -->
                                 <li class="uk-nav-divider"></li>
                             </ul>
                             <ul class="uk-nav uk-nav-comments uk-nav-side" data-uk-nav="">
@@ -140,18 +143,7 @@
                         <div class="uk-grid-width-small-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5" data-uk-grid="{gutter: 20}">
                             @yield('content')
                         </div>
-                        <div class="uk-margin-large-top uk-margin-bottom">
-                            <ul class="uk-pagination">
-                                <li class="uk-disabled"><span><i class="uk-icon-angle-double-left"></i></span></li>
-                                <li class="uk-active"><span>1</span></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><span>...</span></li>
-                                <li><a href="#">20</a></li>
-                                <li><a href="#"><i class="uk-icon-angle-double-right"></i></a></li>
-                            </ul>
-                        </div>
+                        @yield('pagination')
                     </div>
                 </div>
             </div>

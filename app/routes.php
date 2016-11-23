@@ -1,6 +1,5 @@
 <?php
 
-
 Route::group(array('prefix' => 'admin'), function() {
 
 	Route::group(['before' => 'auth'], function() {
@@ -53,6 +52,14 @@ Route::group(array('prefix' => 'admin'), function() {
 });
 
 Route::get('/about', 'HomeController@about');
+Route::get('/movie/{slug}', [
+	'as' => 'movie.detail', 
+	'uses' => 'MovieController@detail'
+]);
+Route::get('/category/{genre}', [
+	'as' => 'genre.detail', 
+	'uses' => 'MovieController@detail'
+]);
 Route::get('/', 'HomeController@index');
 
 

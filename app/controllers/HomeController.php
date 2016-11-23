@@ -4,7 +4,9 @@ class HomeController extends BaseController {
 
 	public function index()
 	{
-		return View::make('front.home.index');
+		$movies = Movie::paginate(5);
+
+		return View::make('front.home.index', compact('movies'));
 	}
 
 	public function about()

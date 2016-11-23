@@ -80,6 +80,8 @@ App::down(function()
 
 require app_path().'/filters.php';
 
+require app_path().'/view_composer.php';
+
 App::singleton('options', function ($app) {
     //return \Cache::rememberForever('siteOptions', function() {
         return SiteOption::lists('option_value', 'option_name');
