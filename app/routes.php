@@ -52,13 +52,17 @@ Route::group(array('prefix' => 'admin'), function() {
 });
 
 Route::get('/about', 'HomeController@about');
+Route::get('/movie', [
+	'as' => 'movie.index', 
+	'uses' => 'MovieController@index'
+]);
 Route::get('/movie/{slug}', [
 	'as' => 'movie.detail', 
 	'uses' => 'MovieController@detail'
 ]);
-Route::get('/category/{genre}', [
+Route::get('/genre/{genre}', [
 	'as' => 'genre.detail', 
-	'uses' => 'MovieController@detail'
+	'uses' => 'MovieController@genre'
 ]);
 Route::get('/', 'HomeController@index');
 

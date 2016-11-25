@@ -9,7 +9,7 @@
                         <div class="uk-grid">
                             <div class="uk-width-medium-3-10">
                                 <div  class="media-cover">
-                                    <img src="https://image.tmdb.org/t/p/w342/zSouWWrySXshPCT4t3UKCQGayyo.jpg" alt="Image" class="uk-scrollspy-inview uk-animation-fade">
+                                    <img src="/uploads/movies/posters/{{ $movie->original_poster }}" alt="Image" class="uk-scrollspy-inview uk-animation-fade">
                                 </div>
                                 <a class="uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top" href="login.html"><i class="uk-icon-television uk-margin-small-right"></i> Watch Now</a>
                                 <a class="uk-button uk-button-link uk-text-muted uk-button-large uk-width-1-1 uk-margin-top" href="login.html"><i class="uk-icon-heart uk-margin-small-right"></i> Add to Favourites</a>
@@ -51,8 +51,8 @@
                                                 </ul></dd>
                                                 <dt>Genres</dt>
                                                 <dd><ul class="uk-subnav">
-                                                    @foreach(explode(",", $movie->genres) as $genre)
-                                                    <li><a href="{{ route('genre.detail', $genre) }}">{{ $genre }} </a></li>
+                                                    @foreach(explode(", ", $movie->genres) as $genre)
+                                                    <li><a href="{{ route('genre.detail', strtolower($genre)) }}">{{ $genre }} </a></li>
                                                     @endforeach
                                                 </ul></dd>
                                             </dl>
