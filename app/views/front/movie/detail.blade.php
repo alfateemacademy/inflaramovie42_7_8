@@ -1,5 +1,9 @@
 @extends('front.layouts.master')
 
+@section('header.styles')
+    <link rel="stylesheet" href="/front_assets/js/components/rateit/scripts/rateit.css">
+@endsection
+
 @section('content')
 <div class="uk-container uk-container-center uk-width-8-10">
                         <div class="media-container  uk-container-center">
@@ -28,13 +32,20 @@
                                          <!--     start Tab Panel 1 (Reviews Sections) -->
 
                                         <li>
-                                            <h2 class="uk-text-contrast uk-margin-large-top">{{ $movie->title }} <span class="rating uk-margin-small-left uk-h4 uk-text-warning">
+                                            <h2 class="uk-text-contrast uk-margin-large-top">{{ $movie->title }} {{ Auth::user()->name }}
+                                            <input type="range" min="0" max="5" step="0.5" value="{{ $average }}" id="backing3">
+                                            <div class="rateit" 
+                                                data-rateit-backingfld="#backing3" 
+                                                data-movieid="{{ $movie->id }}"
+                                                data-rateit-readonly="{{ (!Auth::check()) ? 'true' : 'false' }}"></div>
+                                            <!-- <span class="rating uk-margin-small-left uk-h4 uk-text-warning">
                                                 <i class="uk-icon-star "></i>
                                                 <i class="uk-icon-star"></i>
                                                 <i class="uk-icon-star"></i>
                                                 <i class="uk-icon-star"></i>
                                                 <i class="uk-icon-star"></i>
-                                            </span></h2>
+                                            </span> -->
+                                            </h2>
                                             <ul class="uk-subnav uk-subnav-line">
                                                 <li ><i class="uk-icon-star uk-margin-small-right"></i> 9.5</li>
                                                 <li><i class="uk-icon-clock-o uk-margin-small-right"></i> 108 Mins</li>
@@ -179,4 +190,47 @@
                             </div>
                         </div>
 
+@endsection
+
+@section('footer.scripts')
+<script src="/front_assets/js/components/rateit/scripts/jquery.rateit.js"></script>
+<script type ="text/javascript">
+     //we bind only to the rateit controls within the products div
+     $('.rateit').bind('rated reset', function (e) {
+         var ri = $(this);
+ 
+         //if the use pressed reset, it will get value: 0 (to be compatible with the HTML range control), we could check if e.type == 'reset', and then set the value to  null .
+         var value = ri.rateit('value');
+         var movieId = ri.data('movieid');
+         //console.log(value, movieId);
+         //var productID = ri.data('productid'); // if the product id was in some hidden field: ri.closest('li').find('input[name="productid"]').val()
+ 
+         //maybe we want to disable voting?
+         //ri.rateit('readonly', true);
+ 
+         $.ajax({
+             url: '/movie/' + movieId + '/rating', //your server side script
+             data: { value: value }, //our data
+             type: 'POST',
+             success: function(response) {
+                //ri.rateit('readonly', false);
+                if(response.status)
+                {
+                    alert("Voted");
+                }
+                else
+                {
+                    alert("something fishy fishy");
+                }
+             }
+             /*success: function (data) {
+                 $('#response').append('<li>' + data + '</li>');
+ 
+             },
+             error: function (jxhr, msg, err) {
+                 $('#response').append('<li style="color:red">' + msg + '</li>');
+             }*/
+         });
+     });
+ </script>
 @endsection

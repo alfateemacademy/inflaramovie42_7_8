@@ -9,14 +9,13 @@
         
         <h5 class="uk-panel-title">{{ $movie->title }}</h5>
         <p>
-            <span class="rating">
-                <i class="uk-icon-star"></i>
-                <i class="uk-icon-star"></i>
-                <i class="uk-icon-star"></i>
-                <i class="uk-icon-star"></i>
-                <i class="uk-icon-star"></i>
-            </span>
-            <span class="uk-float-right">2016</span>
+            <input type="range" min="0" max="5" step="0.5" value="{{ getAverageRating($movie->ratings->sum('rating'), $movie->ratings->count()) }}" id="backing-{{$movie->id}}">
+            <div class="rateit" 
+                data-rateit-backingfld="#backing-{{$movie->id}}"
+                 data-rateit-resetable="false" 
+                data-movieid="{{ $movie->id }}"
+                data-rateit-readonly="{{ (!Auth::check()) ? 'true' : 'false' }}">
+            </div>
         </p>
     </div>
 </div>

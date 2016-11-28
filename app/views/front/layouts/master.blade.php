@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/front_assets/css/uikit.min.css">
         <!--     Theme CSS   -->
         <link rel="stylesheet" href="/front_assets/css/theme.css">
+        @yield('header.styles')
     </head>
     <body>
 
@@ -241,6 +242,7 @@
                     <script src="/front_assets/js/jquery.js"></script>
                     <script src="/front_assets/js/uikit.min.js"></script>
                     <script src="/front_assets/js/components/grid.min.js"></script>
+                    @yield('footer.scripts');
 
                 </body>
             </html>

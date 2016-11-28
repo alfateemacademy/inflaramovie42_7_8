@@ -12,5 +12,11 @@ class Movie extends Eloquent {
 		return $this->belongsToMany('Person', 'movie_actor', 'movie_id', 'actor_id')
 			->withPivot('char_name');
 	}
+
+	public function ratings()
+	{
+		return $this->belongsToMany('User', 'movie_rating', 'movie_id', 'user_id')
+			->withPivot('rating');
+	}
 	
 }

@@ -64,6 +64,10 @@ Route::get('/genre/{genre}', [
 	'as' => 'genre.detail', 
 	'uses' => 'MovieController@genre'
 ]);
+Route::post('/movie/{movie}/rating', [
+	'as' => 'movie.save-rating', 
+	'uses' => 'MovieController@saveRating'
+]);
 Route::get('/', 'HomeController@index');
 
 

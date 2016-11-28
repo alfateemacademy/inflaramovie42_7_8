@@ -4,16 +4,21 @@ class MovieController extends \BaseController {
 
 	public function index()
 	{
-		$movies = Movie::paginate(5);
+		$movies = Movie::with('ratings')->paginate(5);
 
 		return View::make('front.movie.index', compact('movies'));
 	}
 	
 	public function detail($slug)
 	{
-		$movie = Movie::with('actors')->where('slug', $slug)->first();
+		Auth::loginUsingId(2);
+		$movie = Movie::with('actors', 'ratings')->where('slug', $slug)->first();
 
-		return View::make('front.movie.detail', compact('movie'));
+		$count = $movie->ratings()->count();
+		$totalRatings = $movie->ratings()->sum('rating');
+		$average = $totalRatings / $count;
+
+		return View::make('front.movie.detail', compact('movie', 'average'));
 	}
 
 	public function genre($genre)
@@ -22,6 +27,33 @@ class MovieController extends \BaseController {
 		$latestMovies = Movie::orderBy('id', 'DESC')->take(5)->get();
 
 		return View::make('front.movie.genre', compact('movies', 'genre', 'latestMovies'));
+	}
+
+	public function saveRating($movieId)
+	{
+		$movie = Movie::find($movieId);
+
+		if(!Auth::check())
+		{
+			return Response::json(['status' => false]);
+		}
+
+		$userId = Auth::user()->id;
+
+		$rating = DB::table('movie_rating')->where('movie_id', $movieId)
+			->where('user_id', $userId);
+
+		if($rating->first())
+		{
+			$rating->update(['rating' => Input::get('value')]);
+			//$movie->ratings()->sync([$userId], ['rating' => Input::get('value')]);
+		}
+		else
+		{
+			$movie->ratings()->attach($userId, ['rating' => Input::get('value')]);
+		}
+
+		return Response::json(['status' => true]);
 	}
 
 
