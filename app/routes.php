@@ -68,6 +68,12 @@ Route::post('/movie/{movie}/rating', [
 	'as' => 'movie.save-rating', 
 	'uses' => 'MovieController@saveRating'
 ]);
+
+Route::post('/movie/{id}/review', [
+	'before' => 'csrf',
+	'as' => 'movie.post-review', 
+	'uses' => 'MovieController@postReview'
+]);
 Route::get('/', 'HomeController@index');
 
 

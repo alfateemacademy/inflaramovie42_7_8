@@ -11,10 +11,10 @@ class MovieController extends \BaseController {
 	
 	public function detail($slug)
 	{
-		Auth::loginUsingId(2);
+		// Auth::loginUsingId(2);
 		$movie = Movie::with('actors', 'ratings')->where('slug', $slug)->first();
 
-		$count = $movie->ratings()->count();
+		$count = ($movie->ratings()->count() > 0) ? $movie->ratings()->count() : 1;
 		$totalRatings = $movie->ratings()->sum('rating');
 		$average = $totalRatings / $count;
 
@@ -54,6 +54,24 @@ class MovieController extends \BaseController {
 		}
 
 		return Response::json(['status' => true]);
+	}
+
+	public function postReview($movieId)
+	{
+		if(!Auth::check())
+		{
+			return Response::json(['status' => false, 'message' => 'You are not logged-in']);
+		}
+
+		$movie = Movie::with('reviews')->find($movieId);
+
+		$movie->reviews()->create([
+			'user_id' => Auth::user()->id, 
+			'description' => Input::get('description')
+		]);
+
+		return Response::json(['status' => true]);
+		
 	}
 
 

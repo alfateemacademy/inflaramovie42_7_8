@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="token" content="{{ csrf_token() }}">
         <title>Webflix - Streaming Media Theme - Homepage v1</title>
         <link rel="apple-touch-icon-precomposed" href="/front_assets/img/apple-touch-icon.png">
         <!--     Include UIKit CSS   -->
@@ -243,6 +244,23 @@
                     <script src="/front_assets/js/uikit.min.js"></script>
                     <script src="/front_assets/js/components/grid.min.js"></script>
                     @yield('footer.scripts');
+                    <script>
+                        /*$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+                        // console.log("Main.js Prefilter: ", options);
+                          var token;
+                          if (!options.crossDomain) {
+                            token = $('meta[name="token"]').attr('content');
+                            if (token) {
+                              jqXHR.setRequestHeader('X-CSRF-Token', token);
+                            }
+                          }
+                        });*/
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
+                            }
+                        });
+                    </script>
 
                 </body>
             </html>

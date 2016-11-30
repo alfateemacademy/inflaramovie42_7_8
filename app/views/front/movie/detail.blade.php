@@ -77,19 +77,22 @@
                                             <li>
                                                 <div class="uk-margin-small-top">
                                                     <h3 class="uk-text-contrast uk-margin-top">Post a Review</h3>
+                                                    @if(!Auth::check())
                                                     <div class="uk-alert uk-alert-warning" data-uk-alert="">
                                                         <a href="" class="uk-alert-close uk-close"></a>
                                                         <p><i class="uk-icon-exclamation-triangle uk-margin-small-right "></i> Please <a class="uk-text-contrast" href="login.html"> Log in</a> or Sign up to post reviews quicker.</p>
                                                     </div>
+                                                    @endif
+                                                    {{ Form::open(['route' => ['movie.post-review', $movie->id], 'method' => 'post', 'class' => 'uk-form uk-margin-bottom']) }}
                                                     <form class="uk-form uk-margin-bottom">
                                                         <div class="uk-form-row">
-                                                            <textarea class="uk-width-1-1" cols="30" rows="5" placeholder="Type your review here..."></textarea>
+                                                            <textarea class="uk-width-1-1" cols="30" rows="5" name="description" placeholder="Type your review here..."></textarea>
                                                             <p class="uk-form-help-block">The <code>.uk-form-help-block</code> class creates an associated paragraph.</p>
                                                         </div>
                                                         <div class="uk-form-row">
-                                                            <a href="" class="uk-button uk-button-large uk-button-success uk-float-right">Post</a>
+                                                            <a href="javascript:;" id="button-post" class="uk-button uk-button-large uk-button-success uk-float-right">Post</a>
                                                         </div>
-                                                    </form>
+                                                    {{ Form::close() }}
                                                     </div>
 
                                                     <div  class="uk-scrollable-box uk-responsive-width " data-simplebar-direction="vertical">
@@ -195,6 +198,26 @@
 @section('footer.scripts')
 <script src="/front_assets/js/components/rateit/scripts/jquery.rateit.js"></script>
 <script type ="text/javascript">
+
+    $("#button-post").on('click', function() {
+        var $form = $(this).closest("form");
+
+        var url = $form.attr('action');
+        var formData = $form.serializeArray();
+
+        console.log(formData);
+
+        $.post(url, formData, function(response) {
+            if(response.status)
+            {
+                alert("Review under moderation");
+            }
+            else
+            {
+                alert(response.message);
+            }
+        });
+    });
      //we bind only to the rateit controls within the products div
      $('.rateit').bind('rated reset', function (e) {
          var ri = $(this);
